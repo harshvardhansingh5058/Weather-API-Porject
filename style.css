@@ -164,6 +164,16 @@ body {
 
   gap: 22px;
 }
+.forecast-heading {
+  grid-column: 1/-1;
+
+  text-align: center;
+
+  color: white;
+
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
 
 /* CITY HEADING */
 
@@ -182,7 +192,7 @@ body {
 /* WEATHER CARD */
 
 .weather-card {
-  min-height: 220px;
+  min-height: 150px;
 
   padding: 30px;
 

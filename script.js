@@ -34,6 +34,45 @@ const fetchWeather = async (city) => {
 
 }
 
+// Condition ke hisaab se emoji
+const getEmoji = (description) => {
+  const desc = description.toLowerCase();
+  if (desc.includes("clear") || desc.includes("sunny")) return "☀️";
+  if (desc.includes("cloud")) return "☁️";
+  if (desc.includes("rain")) return "🌧️";
+  if (desc.includes("thunderstorm") || desc.includes("thunder")) return "⛈️";
+  if (desc.includes("snow")) return "❄️";
+  if (desc.includes("haze") || desc.includes("mist")) return "🌫️";
+  return "🌤️";
+};
+
+
+function getAQIStatus(aqi) {
+
+  switch (aqi) {
+
+    case 1:
+      return "Good";
+
+    case 2:
+      return "Moderate";
+
+    case 3:
+      return "Sensitive";
+
+    case 4:
+      return "Unhealthy";
+
+    case 5:
+      return "Very Unhealthy";
+
+    case 6:
+      return "Hazardous";
+
+    default:
+      return "Unknown";
+  }
+}
 const showWeather = (data) => {
   const result = document.getElementById("weatherResult");
   result.innerHTML = "";
@@ -111,6 +150,45 @@ const showWeather = (data) => {
     <span>hPa</span>
     `;
 
+
+  const aqi = data.current.air_quality["us-epa-index"];
+
+  const aqiCard = document.createElement("div");
+
+  aqiCard.className = "weather-card";
+
+  aqiCard.innerHTML = `
+  <h3>🌫️ AQI</h3>
+  <p>${aqi}</p>
+  <span>${getAQIStatus(aqi)}</span>
+`;
+
+
+
+  const forecastDays = data.forecast.forecastday;
+  let forecastHTML = `
+  <h2 class="forecast-heading">3 Day Forecast</h2>
+`;
+  forecastDays.forEach((day) => {
+    forecastHTML += `
+    <div class="weather-card">
+      <h3>${day.date}</h3>
+
+      <p style="font-size: 48px">
+        ${getEmoji(day.day.condition.text)}
+      </p>
+
+      <span>${day.day.condition.text}</span>
+
+      <p style="font-size:1.8rem; margin-top:15px;">
+        ${day.day.maxtemp_c}° / ${day.day.mintemp_c}°
+      </p>
+    </div>
+  `;
+  });
+
+
+
   result.appendChild(tempCard);
   result.appendChild(condCard);
   result.appendChild(humCard);
@@ -119,26 +197,20 @@ const showWeather = (data) => {
   result.appendChild(visibilityCard);
   result.appendChild(cloudCard);
   result.appendChild(pressureCard);
+  result.appendChild(aqiCard);
+  // result.innerHTML += forecastHTML;
+  result.insertAdjacentHTML(
+    "beforeend",
+    forecastHTML
+  );
 };
 
 
 
-// Condition ke hisaab se emoji
-const getEmoji = (description) => {
-  const desc = description.toLowerCase();
-  if (desc.includes("clear") || desc.includes("sunny")) return "☀️";
-  if (desc.includes("cloud")) return "☁️";
-  if (desc.includes("rain")) return "🌧️";
-  if (desc.includes("thunderstorm") || desc.includes("thunder")) return "⛈️";
-  if (desc.includes("snow")) return "❄️";
-  if (desc.includes("haze") || desc.includes("mist")) return "🌫️";
-  return "🌤️";
-};
 
 // Dark theme code...
 
 const themeBtn = document.getElementById("themeToggle");
-
 themeBtn.addEventListener("click", () => {
 
   document.body.classList.toggle("dark-theme");
