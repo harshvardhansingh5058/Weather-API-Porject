@@ -1,16 +1,29 @@
 // script.js
 // CONFIG object config.js se aata hai
 
-const apiKey = "89b6a045b4b64ae382345813263005";// api key 
+const apiKey = "89b6a045b4b64ae382345813263005";// api key
+const errorMsg = document.getElementById("errorMsg");
 
+document.getElementById("getWeatherBtn").addEventListener("click", () => {
+  const city = document.getElementById("cityInput").value.trim();
+  if (!city) {
+    errorMsg.textContent = "Please enter a city name";
+    return;
+  }
+  errorMsg.textContent = "";
+  fetchWeather(city);
+  console.log("Fetching weather for:", city);
+  console.log(document.getElementById("errorMsg"));
+
+});
 document.getElementById("cityInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
-    const city = document.getElementById("cityInput").value;
-    fetchWeather(city)  // sirf city print
+    document.getElementById("getWeatherBtn").click();
   }
 });
 
 const fetchWeather = async (city) => {
+  if (!city) return;
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city},India&days=3&aqi=yes`;
 
   const response = await fetch(url);
