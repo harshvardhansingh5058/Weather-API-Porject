@@ -1,8 +1,7 @@
 // script.js
 // CONFIG object config.js se aata hai
 
-const apiKey = CONFIG.WEATHER_API_KEY;
-console.log(apiKey)  // api key print
+const apiKey = "89b6a045b4b64ae382345813263005";// api key 
 
 document.getElementById("cityInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
