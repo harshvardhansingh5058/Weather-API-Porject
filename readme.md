@@ -23,5 +23,6 @@ A modern weather application built with HTML, CSS, and JavaScript using WeatherA
 
 ## Live Demo
 
-🔗 https://github.com/harshvardhansingh5058/Weather-API-Porject.git
+🔗 https://harshvardhansingh5058.github.io/Weather-API-Porject/
+
 
