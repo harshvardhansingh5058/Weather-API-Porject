@@ -1,0 +1,28 @@
+# .gitignore
+# Config file mein API keys hain, GitHub pe upload na ho
+
+# API configuration
+config.js
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+npm-debug.log
+
+# Build
+dist/
+build/
