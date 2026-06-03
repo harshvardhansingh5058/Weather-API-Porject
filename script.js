@@ -35,16 +35,16 @@ const fetchWeather = async (city) => {
 }
 
 // Condition ke hisaab se emoji
-const getEmoji = (description) => {
-  const desc = description.toLowerCase();
-  if (desc.includes("clear") || desc.includes("sunny")) return "☀️";
-  if (desc.includes("cloud")) return "☁️";
-  if (desc.includes("rain")) return "🌧️";
-  if (desc.includes("thunderstorm") || desc.includes("thunder")) return "⛈️";
-  if (desc.includes("snow")) return "❄️";
-  if (desc.includes("haze") || desc.includes("mist")) return "🌫️";
-  return "🌤️";
-};
+// const getEmoji = (description) => {
+//   const desc = description.toLowerCase();
+//   if (desc.includes("clear") || desc.includes("sunny")) return "☀️";
+//   if (desc.includes("cloud")) return "☁️";
+//   if (desc.includes("rain")) return "🌧️";
+//   if (desc.includes("thunderstorm") || desc.includes("thunder")) return "⛈️";
+//   if (desc.includes("snow")) return "❄️";
+//   if (desc.includes("haze") || desc.includes("mist")) return "🌫️";
+//   return "🌤️";
+// };
 
 
 function getAQIStatus(aqi) {
@@ -74,46 +74,68 @@ function getAQIStatus(aqi) {
   }
 }
 const showWeather = (data) => {
+
   const result = document.getElementById("weatherResult");
   result.innerHTML = "";
 
+  // Heading
   const cityHeading = document.createElement("h2");
-  cityHeading.textContent = `📍 ${data.location.name}, ${data.location.country} (${data.location.localtime})`;
-  cityHeading.style.cssText = "color:white; text-align:center; grid-column: 1/-1; font-size:22px;";
+
+  cityHeading.textContent =
+    `📍 ${data.location.name}, ${data.location.country} (${data.location.localtime})`;
+
+  cityHeading.style.cssText =
+    "color:white; text-align:center; grid-column:1/-1; font-size:22px;";
+
   result.appendChild(cityHeading);
 
+  // Temperature
   const tempCard = document.createElement("div");
   tempCard.className = "weather-card";
+
   tempCard.innerHTML = `
     <h3>🌡️ Temperature</h3>
     <p>${data.current.temp_c}°C</p>
     <span>Feels like ${data.current.feelslike_c}°C</span>
   `;
 
+  // Condition
   const condCard = document.createElement("div");
   condCard.className = "weather-card";
+
   condCard.innerHTML = `
     <h3>☁️ Condition</h3>
-    <p style="font-size:48px">${getEmoji(data.current.condition.text)}</p>
+
+    <img
+      src="https:${data.current.condition.icon}"
+      alt="${data.current.condition.text}"
+      style="width:64px;height:64px;"
+    >
+
     <span>${data.current.condition.text}</span>
   `;
 
+  // Humidity
   const humCard = document.createElement("div");
   humCard.className = "weather-card";
+
   humCard.innerHTML = `
     <h3>💧 Humidity</h3>
     <p>${data.current.humidity}%</p>
-    <span>Pressure: ${data.current.pressure_mb} hPa</span>
+    <span>Humidity Level</span>
   `;
 
+  // Wind
   const windCard = document.createElement("div");
   windCard.className = "weather-card";
+
   windCard.innerHTML = `
     <h3>💨 Wind</h3>
     <p>${data.current.wind_kph} km/h</p>
-    <span>Direction: ${data.current.wind_dir}</span>
+    <span>${data.current.wind_dir}</span>
   `;
 
+  // UV
   const uvCard = document.createElement("div");
   uvCard.className = "weather-card";
 
@@ -121,26 +143,29 @@ const showWeather = (data) => {
     <h3>☀️ UV Index</h3>
     <p>${data.current.uv}</p>
     <span>UV Level</span>
-    `;
+  `;
 
+  // Visibility
   const visibilityCard = document.createElement("div");
   visibilityCard.className = "weather-card";
 
   visibilityCard.innerHTML = `
-      <h3>👀 Visibility</h3>
-      <p>${data.current.vis_km} km</p>
-      <span>Visibility Range</span>
-      `;
+    <h3>👀 Visibility</h3>
+    <p>${data.current.vis_km} km</p>
+    <span>Visibility Range</span>
+  `;
 
+  // Cloud
   const cloudCard = document.createElement("div");
   cloudCard.className = "weather-card";
 
   cloudCard.innerHTML = `
-      <h3>☁️ Cloud Cover</h3>
-      <p>${data.current.cloud}%</p>
-      <span>Cloud Coverage</span>
-      `;
+    <h3>☁️ Cloud Cover</h3>
+    <p>${data.current.cloud}%</p>
+    <span>Cloud Coverage</span>
+  `;
 
+  // Pressure
   const pressureCard = document.createElement("div");
   pressureCard.className = "weather-card";
 
@@ -148,47 +173,21 @@ const showWeather = (data) => {
     <h3>🌡️ Pressure</h3>
     <p>${data.current.pressure_mb}</p>
     <span>hPa</span>
-    `;
+  `;
 
-
+  // AQI
   const aqi = data.current.air_quality["us-epa-index"];
 
   const aqiCard = document.createElement("div");
-
   aqiCard.className = "weather-card";
 
   aqiCard.innerHTML = `
-  <h3>🌫️ AQI</h3>
-  <p>${aqi}</p>
-  <span>${getAQIStatus(aqi)}</span>
-`;
-
-
-
-  const forecastDays = data.forecast.forecastday;
-  let forecastHTML = `
-  <h2 class="forecast-heading">3 Day Forecast</h2>
-`;
-  forecastDays.forEach((day) => {
-    forecastHTML += `
-    <div class="weather-card">
-      <h3>${day.date}</h3>
-
-      <p style="font-size: 48px">
-        ${getEmoji(day.day.condition.text)}
-      </p>
-
-      <span>${day.day.condition.text}</span>
-
-      <p style="font-size:1.8rem; margin-top:15px;">
-        ${day.day.maxtemp_c}° / ${day.day.mintemp_c}°
-      </p>
-    </div>
+    <h3>🌫️ AQI</h3>
+    <p>${aqi}</p>
+    <span>${getAQIStatus(aqi)}</span>
   `;
-  });
 
-
-
+  // Append all cards
   result.appendChild(tempCard);
   result.appendChild(condCard);
   result.appendChild(humCard);
@@ -198,11 +197,38 @@ const showWeather = (data) => {
   result.appendChild(cloudCard);
   result.appendChild(pressureCard);
   result.appendChild(aqiCard);
-  // result.innerHTML += forecastHTML;
+
+  // Forecast Heading
   result.insertAdjacentHTML(
     "beforeend",
-    forecastHTML
+    `<h2 class="forecast-heading">3 Day Forecast</h2>`
   );
+
+  // Forecast Cards
+  data.forecast.forecastday.forEach((day) => {
+
+    const forecastCard = document.createElement("div");
+
+    forecastCard.className = "weather-card";
+
+    forecastCard.innerHTML = `
+  <h3>${day.date}</h3>
+
+  <img
+    src="https:${day.day.condition.icon}"
+    alt="${day.day.condition.text}"
+    style="width:48px;height:48px;"
+  >
+
+  <span>${day.day.condition.text}</span>
+
+  <p>
+    ${day.day.maxtemp_c}° / ${day.day.mintemp_c}°
+  </p>
+`;
+    result.appendChild(forecastCard);
+  });
+
 };
 
 

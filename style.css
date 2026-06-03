@@ -406,3 +406,11 @@ body.dark-theme .background {
   background-size: cover;
   background-position: center;
 }
+
+
+.weather-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
